@@ -16,7 +16,8 @@ export default {
         'lk-text-light': '#626262',
       },
       fontFamily: {
-        sans: ['Inter', 'sans-serif'],
+        sans: ['DM Sans', 'system-ui', '-apple-system', 'sans-serif'],
+        display: ['Plus Jakarta Sans', 'system-ui', '-apple-system', 'sans-serif'],
       },
       boxShadow: {
         'soft': '0 2px 15px rgba(0, 0, 0, 0.04)',
