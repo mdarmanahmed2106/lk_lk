@@ -1,37 +1,84 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Star } from 'lucide-react';
 
 const ServiceCard = ({ title, rating, reviews, price, image, discount }) => {
+  const [isHovered, setIsHovered] = useState(false);
+
   return (
-    <motion.div 
-      className="flex-shrink-0 w-[240px] bg-white rounded-xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-md transition-shadow cursor-pointer group"
-      whileHover={{ y: -4 }}
+    <motion.div
+      onHoverStart={() => setIsHovered(true)}
+      onHoverEnd={() => setIsHovered(false)}
+      whileHover={{ y: -12 }}
+      className="relative group cursor-pointer w-full"
     >
-      <div className="relative h-40 overflow-hidden">
-        <img 
-          src={image} 
-          alt={title} 
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-        />
-        {discount && (
-          <div className="absolute top-3 left-3 bg-lk-teal text-white text-[10px] font-bold px-2 py-1 rounded-md shadow-sm">
-            {discount} OFF
-          </div>
-        )}
-      </div>
-      
-      <div className="p-4">
-        <div className="flex items-center gap-1 mb-1">
-          <Star size={14} className="fill-lk-text text-lk-text" />
-          <span className="text-xs font-bold text-lk-text">{rating}</span>
-          <span className="text-xs text-gray-400">({reviews})</span>
+      {/* Gradient glow effect on hover */}
+      <motion.div
+        animate={{ opacity: isHovered ? 0.75 : 0 }}
+        transition={{ duration: 0.3 }}
+        className="absolute -inset-1 bg-gradient-to-r from-lk-teal to-lk-mustard rounded-2xl blur opacity-0"
+      />
+
+      <div className="relative bg-white rounded-xl overflow-hidden shadow-lg h-full flex flex-col">
+        {/* Image with overlay gradient */}
+        <div className="relative h-44 overflow-hidden flex-shrink-0">
+          <motion.img
+            animate={{ scale: isHovered ? 1.1 : 1 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+            src={image}
+            alt={title}
+            className="w-full h-full object-cover"
+          />
+
+          {/* Gradient overlay */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+
+          {/* Floating discount badge */}
+          {discount && (
+            <motion.div
+              initial={{ scale: 0, rotate: -180 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{ type: "spring", stiffness: 200, damping: 15 }}
+              className="absolute top-3 right-3 bg-lk-coral text-white px-2.5 py-1 rounded-full text-xs font-bold shadow-lg"
+            >
+              {discount} OFF
+            </motion.div>
+          )}
+
+          {/* Quick Action Button (appears on hover) */}
+          <motion.button
+            initial={{ opacity: 0, y: 20 }}
+            animate={{
+              opacity: isHovered ? 1 : 0,
+              y: isHovered ? 0 : 20
+            }}
+            transition={{ duration: 0.3 }}
+            className="absolute bottom-3 left-3 right-3 bg-white text-lk-teal py-2 rounded-lg font-semibold text-sm shadow-lg hover:bg-lk-teal hover:text-white transition-colors"
+          >
+            Book Now
+          </motion.button>
         </div>
-        <h3 className="text-sm font-semibold text-lk-text mb-1 line-clamp-1">{title}</h3>
-        <p className="text-xs text-gray-500">Starts at ${price}</p>
+
+        {/* Content - fixed height */}
+        <div className="p-4 flex-grow flex flex-col">
+          <h3 className="font-semibold text-lk-text mb-2 line-clamp-2 min-h-[2.5rem] text-sm leading-tight">{title}</h3>
+
+          <div className="mt-auto">
+            <div className="flex items-center justify-between mb-1">
+              <div className="flex items-center gap-1">
+                <Star className="fill-amber-400 text-amber-400" size={14} />
+                <span className="font-bold text-lk-text text-sm">{rating}</span>
+                <span className="text-xs text-gray-400">({reviews})</span>
+              </div>
+              <div className="text-xl font-bold text-lk-teal">${price}</div>
+            </div>
+            <p className="text-xs text-gray-500">Starts at ${price}</p>
+          </div>
+        </div>
       </div>
     </motion.div>
   );
 };
 
 export default ServiceCard;
+

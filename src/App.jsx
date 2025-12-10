@@ -4,12 +4,13 @@ import Footer from './components/Footer';
 import HeroSection from './sections/HeroSection';
 import PromoSection from './sections/PromoSection';
 import MostBookedSection from './sections/MostBookedSection';
+import TestimonialsSection from './sections/TestimonialsSection';
 import DownloadSection from './sections/DownloadSection';
 import Lenis from 'lenis';
 import 'lenis/dist/lenis.css';
 
 function App() {
-  
+
   useEffect(() => {
     const lenis = new Lenis({
       duration: 1.2,
@@ -35,13 +36,14 @@ function App() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-white font-sans text-lk-text flex flex-col overflow-x-hidden">
+    <div className="min-h-screen font-sans text-lk-text flex flex-col overflow-x-hidden">
       <Navbar />
-      
+
       <main className="flex-grow">
         <HeroSection />
         <PromoSection />
         <MostBookedSection />
+        <TestimonialsSection />
         <DownloadSection />
       </main>
 

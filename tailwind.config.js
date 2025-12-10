@@ -9,6 +9,7 @@ export default {
       colors: {
         'lk-teal': '#1D7C8D',
         'lk-mustard': '#D4A05A',
+        'lk-coral': '#FF6B6B',
         'lk-grey-soft': '#F7F7F7',
         'lk-grey-border': '#E2E2E2',
         'lk-text': '#1C1C1C',

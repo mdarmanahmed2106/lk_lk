@@ -7,17 +7,17 @@ gsap.registerPlugin(ScrollTrigger);
 
 const images = [
   {
-    src: "https://images.unsplash.com/photo-1560750588-73207b1ef5b8?auto=format&fit=crop&q=80&w=800",
+    src: "/images/womens-salon-hero.png",
     alt: "Women's Salon",
     span: "col-span-1 row-span-2"
   },
   {
-    src: "https://images.unsplash.com/photo-1581578731117-104f8a746950?auto=format&fit=crop&q=80&w=800",
+    src: "/images/cleaning-service-hero.png",
     alt: "Cleaning",
     span: "col-span-1 row-span-1"
   },
   {
-    src: "https://images.unsplash.com/photo-1621905251189-fcfa352554ce?auto=format&fit=crop&q=80&w=800",
+    src: "/images/ac-repair-hero.png",
     alt: "AC Repair",
     span: "col-span-1 row-span-1"
   }
@@ -53,9 +53,9 @@ const ImageMosaic = () => {
           whileHover={{ scale: 1.02 }}
           transition={{ duration: 0.3 }}
         >
-          <img 
-            src={img.src} 
-            alt={img.alt} 
+          <img
+            src={img.src}
+            alt={img.alt}
             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
           />
           <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors duration-300"></div>
