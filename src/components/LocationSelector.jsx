@@ -4,11 +4,11 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 const LocationSelector = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [location, setLocation] = useState('New York, USA');
+  const [location, setLocation] = useState('Mumbai, India');
 
   return (
     <div className="relative z-50">
-      <button 
+      <button
         className="flex items-center gap-2 hover:bg-gray-50 px-2 py-1.5 rounded-md transition-colors"
         onClick={() => setIsOpen(!isOpen)}
       >
@@ -26,7 +26,7 @@ const LocationSelector = () => {
             className="absolute top-full left-0 mt-2 w-64 bg-white rounded-xl shadow-float border border-gray-100 p-2 overflow-hidden"
           >
             <div className="p-2 text-xs text-gray-400 font-medium uppercase tracking-wider">Select Location</div>
-            {['New York, USA', 'San Francisco, CA', 'Los Angeles, CA', 'Chicago, IL'].map((loc) => (
+            {['Mumbai, India', 'Delhi, India', 'Bangalore, India', 'Hyderabad, India', 'Chennai, India', 'Kolkata, India', 'Pune, India'].map((loc) => (
               <button
                 key={loc}
                 className="w-full text-left px-3 py-2 text-sm text-lk-text hover:bg-gray-50 rounded-lg transition-colors"

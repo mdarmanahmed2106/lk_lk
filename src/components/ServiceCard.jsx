@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Star } from 'lucide-react';
 
-const ServiceCard = ({ title, rating, reviews, price, image, discount }) => {
+const ServiceCard = ({ title, rating, reviews, price, image, discount, serviceType = "salon" }) => {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
@@ -46,17 +47,22 @@ const ServiceCard = ({ title, rating, reviews, price, image, discount }) => {
           )}
 
           {/* Quick Action Button (appears on hover) */}
-          <motion.button
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{
               opacity: isHovered ? 1 : 0,
               y: isHovered ? 0 : 20
             }}
             transition={{ duration: 0.3 }}
-            className="absolute bottom-3 left-3 right-3 bg-white text-lk-teal py-2 rounded-lg font-semibold text-sm shadow-lg hover:bg-lk-teal hover:text-white transition-colors"
+            className="absolute bottom-3 left-3 right-3"
           >
-            Book Now
-          </motion.button>
+            <Link
+              to={`/${serviceType}/book`}
+              className="block bg-white text-lk-teal py-2 rounded-lg font-semibold text-sm shadow-lg hover:bg-lk-teal hover:text-white transition-colors text-center"
+            >
+              Book Now
+            </Link>
+          </motion.div>
         </div>
 
         {/* Content - fixed height */}

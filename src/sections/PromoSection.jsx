@@ -50,7 +50,7 @@ const PromoSection = () => {
   };
 
   return (
-    <section className="py-12 bg-white border-t border-gray-50">
+    <section className="py-12">
       <div className="max-w-7xl mx-auto px-4 md:px-8">
         <ScrollReveal>
           <div className="flex items-center justify-between mb-6">

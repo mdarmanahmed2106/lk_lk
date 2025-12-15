@@ -1,11 +1,9 @@
 import React, { useEffect } from 'react';
+import { Toaster } from 'react-hot-toast';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
-import HeroSection from './sections/HeroSection';
-import PromoSection from './sections/PromoSection';
-import MostBookedSection from './sections/MostBookedSection';
-import TestimonialsSection from './sections/TestimonialsSection';
-import DownloadSection from './sections/DownloadSection';
+import AppRoutes from './routes';
+import GradientWrapper from './components/GradientWrapper';
 import Lenis from 'lenis';
 import 'lenis/dist/lenis.css';
 
@@ -37,15 +35,38 @@ function App() {
 
   return (
     <div className="min-h-screen font-sans text-lk-text flex flex-col overflow-x-hidden">
-      <Navbar />
+      <Toaster
+        position="top-right"
+        toastOptions={{
+          duration: 3000,
+          style: {
+            background: '#fff',
+            color: '#333',
+            padding: '16px',
+            borderRadius: '12px',
+            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+          },
+          success: {
+            iconTheme: {
+              primary: '#0D9488',
+              secondary: '#fff',
+            },
+          },
+          error: {
+            iconTheme: {
+              primary: '#EF4444',
+              secondary: '#fff',
+            },
+          },
+        }}
+      />
+      <GradientWrapper intensity={0.5} className="flex-grow flex flex-col">
+        <Navbar />
 
-      <main className="flex-grow">
-        <HeroSection />
-        <PromoSection />
-        <MostBookedSection />
-        <TestimonialsSection />
-        <DownloadSection />
-      </main>
+        <main className="flex-grow">
+          <AppRoutes />
+        </main>
+      </GradientWrapper>
 
       <Footer />
     </div>

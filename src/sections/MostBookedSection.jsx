@@ -9,7 +9,8 @@ const services = [
     reviews: "12k",
     price: "19",
     discount: "15%",
-    image: "/images/bathroom-cleaning.png"
+    image: "/images/bathroom-cleaning.png",
+    serviceType: "cleaning"
   },
   {
     title: "Classic Haircut & Beard Trim",
@@ -17,7 +18,8 @@ const services = [
     reviews: "8.5k",
     price: "25",
     discount: "10%",
-    image: "/images/mens-haircut.png"
+    image: "/images/mens-haircut.png",
+    serviceType: "salon"
   },
   {
     title: "Split AC Service",
@@ -25,7 +27,8 @@ const services = [
     reviews: "22k",
     price: "15",
     discount: null,
-    image: "/images/ac-service.png"
+    image: "/images/ac-service.png",
+    serviceType: "electrician"
   },
   {
     title: "Sofa Deep Cleaning",
@@ -33,7 +36,8 @@ const services = [
     reviews: "5k",
     price: "35",
     discount: "20%",
-    image: "/images/sofa-cleaning.png"
+    image: "/images/sofa-cleaning.png",
+    serviceType: "cleaning"
   },
   {
     title: "Full Body Massage (60 min)",
@@ -41,13 +45,14 @@ const services = [
     reviews: "3k",
     price: "49",
     discount: "25%",
-    image: "/images/massage-service.png"
+    image: "/images/massage-service.png",
+    serviceType: "salon"
   }
 ];
 
 const MostBookedSection = () => {
   return (
-    <section className="py-12 bg-lk-grey-soft">
+    <section className="py-12">
       <div className="max-w-7xl mx-auto px-4 md:px-8">
         <ScrollReveal>
           <div className="flex items-center justify-between mb-8">

@@ -115,7 +115,7 @@ const TestimonialCard = ({ name, service, review, rating, avatar, verified, dela
 
 const TestimonialsSection = () => {
     return (
-        <section className="py-20 bg-gradient-to-br from-lk-grey-soft via-white to-lk-grey-soft relative overflow-hidden">
+        <section className="py-20 relative overflow-hidden">
             {/* Decorative blobs */}
             <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-lk-teal/5 rounded-full blur-3xl"></div>
             <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-lk-mustard/5 rounded-full blur-3xl"></div>

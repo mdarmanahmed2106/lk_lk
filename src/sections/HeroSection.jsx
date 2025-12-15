@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
 import {
   Scissors, Zap, Droplets, Wrench, Car, Calendar,
   Stethoscope, Heart, MapPin, Dumbbell, UtensilsCrossed, Trophy
@@ -13,20 +14,20 @@ import gsap from 'gsap';
 
 const categories = [
   // Active Services
-  { icon: Scissors, label: "Salon", comingSoon: false },
-  { icon: Trophy, label: "Sports", comingSoon: false },
-  { icon: Calendar, label: "Events", comingSoon: false },
-  { icon: Car, label: "Car Wash", comingSoon: false },
-  { icon: Zap, label: "Electrician", comingSoon: false },
-  { icon: Wrench, label: "Plumber", comingSoon: false },
-  { icon: Droplets, label: "Cleaning", comingSoon: false },
+  { icon: Scissors, label: "Salon", comingSoon: false, path: "/salon" },
+  { icon: Trophy, label: "Sports", comingSoon: false, path: "/sports" },
+  { icon: Calendar, label: "Events", comingSoon: false, path: "/events" },
+  { icon: Car, label: "Car Wash", comingSoon: false, path: "/car-wash" },
+  { icon: Zap, label: "Electrician", comingSoon: false, path: "/electrician" },
+  { icon: Wrench, label: "Plumber", comingSoon: false, path: "/plumber" },
+  { icon: Droplets, label: "Cleaning", comingSoon: false, path: "/cleaning" },
 
   // Coming Soon Services
-  { icon: Stethoscope, label: "Doctor", comingSoon: true },
-  { icon: Heart, label: "Blood Group", comingSoon: true },
-  { icon: MapPin, label: "Tourist Guide", comingSoon: true },
-  { icon: Dumbbell, label: "Gym & Fitness", comingSoon: true },
-  { icon: UtensilsCrossed, label: "Food Plan", comingSoon: true },
+  { icon: Stethoscope, label: "Doctor", comingSoon: true, path: "#" },
+  { icon: Heart, label: "Blood Group", comingSoon: true, path: "#" },
+  { icon: MapPin, label: "Tourist Guide", comingSoon: true, path: "#" },
+  { icon: Dumbbell, label: "Gym & Fitness", comingSoon: true, path: "#" },
+  { icon: UtensilsCrossed, label: "Food Plan", comingSoon: true, path: "#" },
 ];
 
 const HeroSection = () => {
@@ -119,57 +120,61 @@ const HeroSection = () => {
 
               {/* Enhanced Interactive Grid */}
               <div className="grid grid-cols-3 gap-3 md:gap-4">
-                {categories.map((cat, idx) => (
-                  <motion.button
-                    key={idx}
-                    onClick={() => !cat.comingSoon && setActiveCategory(activeCategory === cat.label ? null : cat.label)}
-                    whileHover={!cat.comingSoon ? { scale: 1.05, rotate: 2 } : {}}
-                    whileTap={!cat.comingSoon ? { scale: 0.95 } : {}}
-                    animate={{
-                      backgroundColor: activeCategory === cat.label ? '#1D7C8D' : '#FFFFFF'
-                    }}
-                    transition={{ duration: 0.3 }}
-                    className={cn(
-                      "relative p-3 md:p-4 rounded-xl shadow-md group overflow-hidden",
-                      cat.comingSoon && "opacity-60 cursor-not-allowed"
-                    )}
-                    disabled={cat.comingSoon}
-                  >
-                    {/* Coming Soon Badge */}
-                    {cat.comingSoon && (
-                      <div className="absolute top-1 right-1 bg-lk-mustard text-white text-[8px] md:text-[9px] font-bold px-1.5 py-0.5 rounded-full z-20">
-                        Soon
-                      </div>
-                    )}
+                {categories.map((cat, idx) => {
+                  const Component = cat.comingSoon ? motion.div : motion(Link);
+                  return (
+                    <Component
+                      key={idx}
+                      to={!cat.comingSoon ? cat.path : undefined}
+                      onClick={() => cat.comingSoon && setActiveCategory(null)}
+                      whileHover={!cat.comingSoon ? { scale: 1.05, rotate: 2 } : {}}
+                      whileTap={!cat.comingSoon ? { scale: 0.95 } : {}}
+                      animate={{
+                        backgroundColor: activeCategory === cat.label ? '#1D7C8D' : '#FFFFFF'
+                      }}
+                      transition={{ duration: 0.3 }}
+                      className={cn(
+                        "relative p-3 md:p-4 rounded-xl shadow-md group overflow-hidden block",
+                        cat.comingSoon && "opacity-60 cursor-not-allowed",
+                        !cat.comingSoon && "cursor-pointer"
+                      )}
+                    >
+                      {/* Coming Soon Badge */}
+                      {cat.comingSoon && (
+                        <div className="absolute top-1 right-1 bg-lk-mustard text-white text-[8px] md:text-[9px] font-bold px-1.5 py-0.5 rounded-full z-20">
+                          Soon
+                        </div>
+                      )}
 
-                    {/* Animated background on hover */}
-                    <motion.div
-                      className="absolute inset-0 bg-gradient-to-br from-lk-teal/20 to-lk-mustard/20"
-                      initial={{ opacity: 0, scale: 0 }}
-                      whileHover={{ opacity: cat.comingSoon ? 0 : 1, scale: cat.comingSoon ? 0 : 1.5 }}
-                      transition={{ duration: 0.4 }}
-                    />
-
-                    <div className="relative z-10 flex flex-col items-center">
+                      {/* Animated background on hover */}
                       <motion.div
-                        animate={{
-                          rotate: activeCategory === cat.label ? 360 : 0,
-                          color: activeCategory === cat.label ? '#FFFFFF' : '#1C1C1C'
-                        }}
-                        transition={{ duration: 0.5 }}
-                        className="mb-2"
-                      >
-                        <cat.icon size={24} strokeWidth={1.5} />
-                      </motion.div>
-                      <span className={cn(
-                        "text-[11px] md:text-xs font-medium text-center leading-tight",
-                        activeCategory === cat.label ? "text-white" : "text-lk-text"
-                      )}>
-                        {cat.label}
-                      </span>
-                    </div>
-                  </motion.button>
-                ))}
+                        className="absolute inset-0 bg-gradient-to-br from-lk-teal/20 to-lk-mustard/20"
+                        initial={{ opacity: 0, scale: 0 }}
+                        whileHover={{ opacity: cat.comingSoon ? 0 : 1, scale: cat.comingSoon ? 0 : 1.5 }}
+                        transition={{ duration: 0.4 }}
+                      />
+
+                      <div className="relative z-10 flex flex-col items-center">
+                        <motion.div
+                          animate={{
+                            rotate: activeCategory === cat.label ? 360 : 0,
+                            color: activeCategory === cat.label ? '#FFFFFF' : '#1C1C1C'
+                          }}
+                          transition={{ duration: 0.5 }}
+                          className="mb-2"
+                        >
+                          <cat.icon size={24} strokeWidth={1.5} />
+                        </motion.div>
+                        <span className={cn(
+                          "text-[11px] md:text-xs font-medium text-center leading-tight",
+                          activeCategory === cat.label ? "text-white" : "text-lk-text"
+                        )}>
+                          {cat.label}
+                        </span>
+                      </div>
+                    </Component>
+                  );
+                })}
               </div>
             </GlassCard>
           </div>
