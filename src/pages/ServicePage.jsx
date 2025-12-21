@@ -110,11 +110,15 @@ const ServicePage = ({
                         </ScrollReveal>
 
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                            {services.map((service, idx) => (
-                                <ScrollReveal key={idx} delay={idx * 0.1}>
-                                    <ServiceCard {...service} />
-                                </ScrollReveal>
-                            ))}
+                            {services.map((service, idx) => {
+                                // Extract serviceType from bookingLink (e.g., "/salon/book" -> "salon")
+                                const serviceType = bookingLink.split('/')[1];
+                                return (
+                                    <ScrollReveal key={idx} delay={idx * 0.1}>
+                                        <ServiceCard {...service} serviceType={serviceType} />
+                                    </ScrollReveal>
+                                );
+                            })}
                         </div>
                     </div>
                 </section>

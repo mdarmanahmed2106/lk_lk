@@ -195,7 +195,7 @@ const ServiceManagement = () => {
                                             </span>
                                         </td>
                                         <td className="py-4 px-4">
-                                            <div className="font-bold text-green-600">${service.price}</div>
+                                            <div className="font-bold text-green-600">₹{service.price}</div>
                                             {service.discount && (
                                                 <div className="text-xs text-orange-600">{service.discount} off</div>
                                             )}
@@ -290,7 +290,7 @@ const ServiceManagement = () => {
                                     </select>
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">Price ($) *</label>
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">Price (₹) *</label>
                                     <input
                                         type="number"
                                         value={formData.price}

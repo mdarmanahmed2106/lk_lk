@@ -10,28 +10,32 @@ const promos = [
     subtitle: "Get up to 40% off on deep cleaning",
     buttonText: "Book Now",
     colorClass: "bg-[#1D7C8D]", // LK Teal
-    image: "/images/home-cleaning-promo.png"
+    image: "/images/home-cleaning-promo.png",
+    link: "/cleaning"
   },
   {
     title: "Salon at Home",
-    subtitle: "Premium spa therapies starting @ $29",
+    subtitle: "Premium spa therapies starting @ ₹2465",
     buttonText: "View Offers",
     colorClass: "bg-[#7C3AED]", // Purple
-    image: "/images/salon-home-promo.png"
+    image: "/images/salon-home-promo.png",
+    link: "/salon"
   },
   {
     title: "Appliance Repair",
     subtitle: "Zero visiting charges this week",
     buttonText: "Book Repair",
     colorClass: "bg-[#D4A05A]", // LK Mustard
-    image: "/images/appliance-repair-promo.png"
+    image: "/images/appliance-repair-promo.png",
+    link: "/electrician"
   },
   {
     title: "Painting Services",
     subtitle: "Refresh your walls for the season",
     buttonText: "Get Quote",
     colorClass: "bg-[#059669]", // Emerald
-    image: "/images/painting-service-promo.png"
+    image: "/images/painting-service-promo.png",
+    link: "/cleaning"
   }
 ];
 

@@ -1,8 +1,6 @@
 import Booking from '../models/Booking.js';
 
-// @desc    Create new booking
-// @route   POST /api/bookings
-// @access  Public
+
 export const createBooking = async (req, res, next) => {
     try {
         const {
@@ -28,7 +26,7 @@ export const createBooking = async (req, res, next) => {
         });
 
         const booking = await Booking.create({
-            user: req.user?._id, // Optional if user is logged in
+            user: req.user?._id, 
             customerName,
             customerEmail,
             customerPhone,

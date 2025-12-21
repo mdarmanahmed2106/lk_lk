@@ -5,7 +5,7 @@ import ScrollReveal from '../components/ScrollReveal';
 
 const testimonials = [
     {
-        name: "Sarah Johnson",
+        name: "Anjali Deshmukh",
         service: "Home Cleaning",
         review: "Absolutely fantastic service! The cleaning team was professional, thorough, and left my home sparkling. I've been using Local Konnect for 6 months now and couldn't be happier.",
         rating: 5,
@@ -13,7 +13,7 @@ const testimonials = [
         verified: true
     },
     {
-        name: "Michael Chen",
+        name: "Rajesh Kumar",
         service: "AC Repair",
         review: "Quick response time and excellent work. The technician diagnosed the issue immediately and had my AC running perfectly within an hour. Highly recommend!",
         rating: 5,
@@ -21,7 +21,7 @@ const testimonials = [
         verified: true
     },
     {
-        name: "Emily Rodriguez",
+        name: "Meera Iyer",
         service: "Salon at Home",
         review: "The stylist was amazing! She listened to exactly what I wanted and delivered beyond my expectations. So convenient to have salon services at home.",
         rating: 5,
@@ -29,7 +29,7 @@ const testimonials = [
         verified: true
     },
     {
-        name: "David Thompson",
+        name: "Arjun Patel",
         service: "Plumbing",
         review: "Professional and reliable. Fixed my leaking pipes quickly and explained everything clearly. Fair pricing and great service.",
         rating: 5,
@@ -45,7 +45,7 @@ const testimonials = [
         verified: true
     },
     {
-        name: "James Wilson",
+        name: "Vikram Singh",
         service: "Electrician",
         review: "Excellent electrical work. The electrician was knowledgeable, safety-conscious, and solved my wiring issues efficiently. Will definitely use again!",
         rating: 5,

@@ -16,6 +16,8 @@ import {
 } from 'lucide-react';
 import { bookingAPI } from '../services/api';
 import GlassCard from '../components/ui/GlassCard';
+import SkeletonStats from '../components/ui/SkeletonStats';
+import SkeletonTable from '../components/ui/SkeletonTable';
 import ServiceManagement from '../components/admin/ServiceManagement';
 
 const AdminDashboard = () => {
@@ -93,8 +95,25 @@ const AdminDashboard = () => {
 
     if (loading) {
         return (
-            <div className="min-h-screen flex items-center justify-center">
-                <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-lk-teal"></div>
+            <div className="min-h-screen pt-32 pb-20 px-4 md:px-8 bg-gradient-to-br from-gray-50 to-gray-100">
+                <div className="max-w-7xl mx-auto">
+                    {/* Header Skeleton */}
+                    <div className="mb-8">
+                        <div className="h-10 bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 animate-shimmer bg-[length:200%_100%] rounded w-80 mb-2" />
+                        <div className="h-5 bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 animate-shimmer bg-[length:200%_100%] rounded w-64" />
+                    </div>
+
+                    {/* Stats Grid Skeleton */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                        <SkeletonStats count={4} />
+                    </div>
+
+                    {/* Table Skeleton */}
+                    <GlassCard className="p-6" intensity="medium">
+                        <div className="h-6 bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 animate-shimmer bg-[length:200%_100%] rounded w-48 mb-6" />
+                        <SkeletonTable rows={5} columns={6} />
+                    </GlassCard>
+                </div>
             </div>
         );
     }
@@ -178,7 +197,7 @@ const AdminDashboard = () => {
                                 <span className="text-gray-600 font-medium">Revenue</span>
                                 <DollarSign className="text-green-600" size={24} />
                             </div>
-                            <div className="text-3xl font-bold text-lk-text">${stats.revenue}</div>
+                            <div className="text-3xl font-bold text-lk-text">₹{stats.revenue}</div>
                             <div className="text-sm text-gray-500 mt-1">From completed bookings</div>
                         </GlassCard>
                     </motion.div>
@@ -267,7 +286,7 @@ const AdminDashboard = () => {
                                                         </div>
                                                     </td>
                                                     <td className="py-4 px-4">
-                                                        <div className="font-bold text-green-600">${booking.totalPrice}</div>
+                                                        <div className="font-bold text-green-600">₹{booking.totalPrice}</div>
                                                     </td>
                                                     <td className="py-4 px-4">
                                                         <span className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold border ${getStatusColor(booking.status)}`}>

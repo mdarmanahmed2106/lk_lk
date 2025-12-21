@@ -29,7 +29,23 @@ const userSchema = new mongoose.Schema({
         type: String,
         enum: ['user', 'admin'],
         default: 'user'
-    }
+    },
+    addresses: [{
+        label: {
+            type: String,
+            required: true,
+            trim: true
+        },
+        addressLine: {
+            type: String,
+            required: true,
+            trim: true
+        },
+        isDefault: {
+            type: Boolean,
+            default: false
+        }
+    }]
 }, {
     timestamps: true
 });

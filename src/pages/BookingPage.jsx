@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import toast from 'react-hot-toast';
-import { ArrowLeft, Calendar, Clock, MapPin, User, Phone, Mail, CreditCard } from 'lucide-react';
+import { ArrowLeft, Calendar, Clock, MapPin, User, Phone, Mail, CreditCard, Navigation, Loader2 } from 'lucide-react';
+import Lottie from 'lottie-react';
 import GlassCard from '../components/ui/GlassCard';
 import { bookingAPI } from '../services/api';
 import { useAuth } from '../context/AuthContext';
@@ -15,9 +16,22 @@ const BookingPage = ({
     backLink = "/"
 }) => {
     const navigate = useNavigate();
+    const location = useLocation();
     const { user, isAuthenticated } = useAuth();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
+    const [showSuccess, setShowSuccess] = useState(false);
+    const [successAnim, setSuccessAnim] = useState(null);
+    const [didRedirect, setDidRedirect] = useState(false);
+    const [isLoadingLocation, setIsLoadingLocation] = useState(false);
+
+    useEffect(() => {
+        // Fetch Lottie JSON from public since Vite disallows direct imports
+        fetch('/animations/Success.json')
+            .then(res => res.json())
+            .then(setSuccessAnim)
+            .catch(err => console.error('Failed to load success animation', err));
+    }, []);
 
     const [formData, setFormData] = useState({
         name: user?.name || '',
@@ -26,8 +40,9 @@ const BookingPage = ({
         date: '',
         time: '',
         address: '',
-        selectedOption: serviceOptions[0]?.name || '',
-        notes: ''
+        selectedOption: location.state?.selectedService || serviceOptions[0]?.name || '',
+        notes: '',
+        selectedAddressId: '' // For tracking which saved address is selected
     });
 
     const handleChange = (e) => {
@@ -36,6 +51,36 @@ const BookingPage = ({
             [e.target.name]: e.target.value
         });
         setError('');
+    };
+
+    const handleAddressSelect = (e) => {
+        const addressId = e.target.value;
+        if (addressId) {
+            const selectedAddress = user.addresses.find(addr => addr._id === addressId);
+            if (selectedAddress) {
+                setFormData({
+                    ...formData,
+                    address: selectedAddress.addressLine,
+                    selectedAddressId: addressId
+                });
+            }
+        } else {
+            setFormData({
+                ...formData,
+                address: '',
+                selectedAddressId: ''
+            });
+        }
+    };
+
+    const handleRedirect = () => {
+        if (didRedirect) return; // prevent double navigation
+        setDidRedirect(true);
+        if (isAuthenticated) {
+            navigate('/profile');
+        } else {
+            navigate('/');
+        }
     };
 
     const handleSubmit = async (e) => {
@@ -77,16 +122,11 @@ const BookingPage = ({
             console.log('✅ Booking created successfully:', response.data);
 
             // Success - redirect to profile or show success message
-            toast.success('Booking confirmed! We will contact you shortly.');
-
-            // Wait a bit before redirecting so user sees the toast
-            setTimeout(() => {
-                if (isAuthenticated) {
-                    navigate('/profile');
-                } else {
-                    navigate('/');
-                }
-            }, 1500);
+            setShowSuccess(true);
+            // Fallback redirect if animation fails to load
+            if (!successAnim) {
+                setTimeout(handleRedirect, 3000);
+            }
         } catch (error) {
             console.error('❌ Booking error:', error);
             console.error('Error response:', error.response?.data);
@@ -97,11 +137,87 @@ const BookingPage = ({
         }
     };
 
+    const handleUseCurrentLocation = () => {
+        if (!navigator.geolocation) {
+            toast.error('Geolocation is not supported by your browser');
+            return;
+        }
+
+        setIsLoadingLocation(true);
+
+        navigator.geolocation.getCurrentPosition(
+            async (position) => {
+                try {
+                    // Using reverse geocoding with OpenStreetMap Nominatim API
+                    const { latitude, longitude } = position.coords;
+                    const response = await fetch(
+                        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
+                    );
+                    const data = await response.json();
+
+                    const city = data.address.city || data.address.town || data.address.village || 'Unknown';
+                    const state = data.address.state || '';
+                    const country = data.address.country || 'India';
+                    const road = data.address.road || '';
+                    const suburb = data.address.suburb || '';
+
+                    // Build a detailed address
+                    let detectedAddress = '';
+                    if (road) detectedAddress += road + ', ';
+                    if (suburb) detectedAddress += suburb + ', ';
+                    if (city) detectedAddress += city + ', ';
+                    if (state) detectedAddress += state + ', ';
+                    detectedAddress += country;
+
+                    setFormData({
+                        ...formData,
+                        address: detectedAddress
+                    });
+                    toast.success(`Location detected: ${city}, ${country}`);
+                } catch (error) {
+                    console.error('Error getting location:', error);
+                    toast.error('Failed to detect location');
+                } finally {
+                    setIsLoadingLocation(false);
+                }
+            },
+            (error) => {
+                setIsLoadingLocation(false);
+                if (error.code === error.PERMISSION_DENIED) {
+                    toast.error('Location permission denied');
+                } else {
+                    toast.error('Failed to get your location');
+                }
+            }
+        );
+    };
+
     const selectedOptionData = serviceOptions.find(opt => opt.name === formData.selectedOption);
     const totalPrice = selectedOptionData?.price || basePrice;
 
     return (
         <div className="min-h-screen pt-32 pb-20 px-4 md:px-8">
+            {showSuccess && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
+                    <div className="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md text-center">
+                        {successAnim ? (
+                            <Lottie
+                                animationData={successAnim}
+                                loop={false}
+                                autoplay
+                                onComplete={handleRedirect}
+                                className="w-64 h-64 mx-auto"
+                            />
+                        ) : (
+                            <div className="w-64 h-64 flex items-center justify-center text-gray-500">
+                                Loading animation...
+                            </div>
+                        )}
+                        <h2 className="text-2xl font-bold text-lk-text mt-4">Booking Confirmed!</h2>
+                        <p className="text-gray-600 mt-2">We’ll reach out soon with the details.</p>
+                    </div>
+                </div>
+            )}
             <div className="max-w-6xl mx-auto">
                 {/* Back button */}
                 <Link
@@ -154,7 +270,7 @@ const BookingPage = ({
                                                 onChange={handleChange}
                                                 required
                                                 className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-lk-teal focus:ring-2 focus:ring-lk-teal/20 outline-none transition-all"
-                                                placeholder="John Doe"
+                                                placeholder="Your Name"
                                             />
                                         </div>
                                         <div>
@@ -208,7 +324,7 @@ const BookingPage = ({
                                                 >
                                                     {serviceOptions.map((option, idx) => (
                                                         <option key={idx} value={option.name}>
-                                                            {option.name} - ${option.price}
+                                                            {option.name} - ₹{option.price}
                                                         </option>
                                                     ))}
                                                 </select>
@@ -248,15 +364,48 @@ const BookingPage = ({
                                                 <MapPin size={16} className="inline mr-2" />
                                                 Service Address *
                                             </label>
-                                            <textarea
-                                                name="address"
-                                                value={formData.address}
-                                                onChange={handleChange}
-                                                required
-                                                rows="3"
-                                                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-lk-teal focus:ring-2 focus:ring-lk-teal/20 outline-none transition-all resize-none"
-                                                placeholder="Enter your complete address"
-                                            />
+                                            {/* Saved Address Selector */}
+                                            {isAuthenticated && user?.addresses && user.addresses.length > 0 && (
+                                                <select
+                                                    value={formData.selectedAddressId}
+                                                    onChange={handleAddressSelect}
+                                                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-lk-teal focus:ring-2 focus:ring-lk-teal/20 outline-none transition-all mb-3"
+                                                >
+                                                    <option value="">-- Select a saved address or enter new --</option>
+                                                    {user.addresses.map((addr) => (
+                                                        <option key={addr._id} value={addr._id}>
+                                                            {addr.label} - {addr.addressLine.substring(0, 50)}...
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                            )}
+                                            <div className="flex gap-2">
+                                                <div className="flex-1">
+                                                    <textarea
+                                                        name="address"
+                                                        value={formData.address}
+                                                        onChange={handleChange}
+                                                        required
+                                                        rows="3"
+                                                        className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-lk-teal focus:ring-2 focus:ring-lk-teal/20 outline-none transition-all resize-none"
+                                                        placeholder="Enter your complete address"
+                                                    />
+                                                </div>
+                                                <button
+                                                    type="button"
+                                                    onClick={handleUseCurrentLocation}
+                                                    disabled={isLoadingLocation}
+                                                    className="px-4 py-2 bg-gradient-to-r from-lk-teal to-lk-mustard text-white rounded-lg hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 h-fit"
+                                                    title="Use current location"
+                                                >
+                                                    {isLoadingLocation ? (
+                                                        <Loader2 size={20} className="animate-spin" />
+                                                    ) : (
+                                                        <Navigation size={20} />
+                                                    )}
+                                                    <span className="hidden sm:inline">Detect</span>
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -331,7 +480,7 @@ const BookingPage = ({
                                 <div className="flex justify-between items-center pt-3">
                                     <span className="text-lg font-bold text-lk-text">Total</span>
                                     <span className="text-2xl font-black bg-gradient-to-r from-lk-teal to-lk-mustard bg-clip-text text-transparent">
-                                        ${totalPrice}
+                                        ₹{totalPrice}
                                     </span>
                                 </div>
                             </div>

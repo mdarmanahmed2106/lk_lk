@@ -4,6 +4,7 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import AppRoutes from './routes';
 import GradientWrapper from './components/GradientWrapper';
+import ScrollToTop from './components/ScrollToTop';
 import Lenis from 'lenis';
 import 'lenis/dist/lenis.css';
 
@@ -60,6 +61,7 @@ function App() {
           },
         }}
       />
+      <ScrollToTop />
       <GradientWrapper intensity={0.5} className="flex-grow flex flex-col">
         <Navbar />
 

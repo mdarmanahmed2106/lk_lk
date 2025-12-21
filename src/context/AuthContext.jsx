@@ -92,6 +92,63 @@ export const AuthProvider = ({ children }) => {
         setUser(null);
     };
 
+    // Address management functions
+    const addAddress = async (addressData) => {
+        try {
+            const response = await authAPI.addAddress(addressData);
+            const updatedUser = response.data.data;
+            setUser(updatedUser);
+            return { success: true, user: updatedUser };
+        } catch (error) {
+            return {
+                success: false,
+                message: error.response?.data?.message || 'Failed to add address'
+            };
+        }
+    };
+
+    const updateAddress = async (id, addressData) => {
+        try {
+            const response = await authAPI.updateAddress(id, addressData);
+            const updatedUser = response.data.data;
+            setUser(updatedUser);
+            return { success: true, user: updatedUser };
+        } catch (error) {
+            return {
+                success: false,
+                message: error.response?.data?.message || 'Failed to update address'
+            };
+        }
+    };
+
+    const deleteAddress = async (id) => {
+        try {
+            const response = await authAPI.deleteAddress(id);
+            const updatedUser = response.data.data;
+            setUser(updatedUser);
+            return { success: true, user: updatedUser };
+        } catch (error) {
+            return {
+                success: false,
+                message: error.response?.data?.message || 'Failed to delete address'
+            };
+        }
+    };
+
+    const setDefaultAddress = async (id) => {
+        try {
+            const response = await authAPI.setDefaultAddress(id);
+            const updatedUser = response.data.data;
+            setUser(updatedUser);
+            return { success: true, user: updatedUser };
+        } catch (error) {
+            return {
+                success: false,
+                message: error.response?.data?.message || 'Failed to set default address'
+            };
+        }
+    };
+
     const value = {
         user,
         token,
@@ -100,7 +157,11 @@ export const AuthProvider = ({ children }) => {
         register,
         updateProfile,
         logout,
-        isAuthenticated: !!token
+        isAuthenticated: !!token,
+        addAddress,
+        updateAddress,
+        deleteAddress,
+        setDefaultAddress
     };
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

@@ -4,7 +4,7 @@ import User from '../models/User.js';
 // Generate JWT Token
 const generateToken = (id) => {
     return jwt.sign({ id }, process.env.JWT_SECRET, {
-        expiresIn: process.env.JWT_EXPIRE
+        expiresIn: process.env.JWT_EXPIRE || '30d' // Default to 30 days if not set
     });
 };
 
@@ -132,3 +132,119 @@ export const updateDetails = async (req, res, next) => {
         next(error);
     }
 };
+
+// @desc    Add address
+// @route   POST /api/auth/addresses
+// @access  Private
+export const addAddress = async (req, res, next) => {
+    try {
+        const { label, addressLine, isDefault } = req.body;
+
+        const user = await User.findById(req.user._id);
+
+        // If this is set as default, unset other defaults
+        if (isDefault) {
+            user.addresses.forEach(addr => addr.isDefault = false);
+        }
+
+        user.addresses.push({ label, addressLine, isDefault });
+        await user.save();
+
+        res.status(200).json({
+            success: true,
+            data: user
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
+// @desc    Update address
+// @route   PUT /api/auth/addresses/:id
+// @access  Private
+export const updateAddress = async (req, res, next) => {
+    try {
+        const { label, addressLine, isDefault } = req.body;
+        const user = await User.findById(req.user._id);
+
+        const address = user.addresses.id(req.params.id);
+        if (!address) {
+            return res.status(404).json({
+                success: false,
+                message: 'Address not found'
+            });
+        }
+
+        // If this is set as default, unset other defaults
+        if (isDefault) {
+            user.addresses.forEach(addr => addr.isDefault = false);
+        }
+
+        address.label = label || address.label;
+        address.addressLine = addressLine || address.addressLine;
+        address.isDefault = isDefault !== undefined ? isDefault : address.isDefault;
+
+        await user.save();
+
+        res.status(200).json({
+            success: true,
+            data: user
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
+// @desc    Delete address
+// @route   DELETE /api/auth/addresses/:id
+// @access  Private
+export const deleteAddress = async (req, res, next) => {
+    try {
+        const user = await User.findById(req.user._id);
+
+        user.addresses = user.addresses.filter(
+            addr => addr._id.toString() !== req.params.id
+        );
+
+        await user.save();
+
+        res.status(200).json({
+            success: true,
+            data: user
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
+// @desc    Set default address
+// @route   PATCH /api/auth/addresses/:id/default
+// @access  Private
+export const setDefaultAddress = async (req, res, next) => {
+    try {
+        const user = await User.findById(req.user._id);
+
+        // Unset all defaults
+        user.addresses.forEach(addr => addr.isDefault = false);
+
+        // Set the specified address as default
+        const address = user.addresses.id(req.params.id);
+        if (!address) {
+            return res.status(404).json({
+                success: false,
+                message: 'Address not found'
+            });
+        }
+
+        address.isDefault = true;
+        await user.save();
+
+        res.status(200).json({
+            success: true,
+            data: user
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+

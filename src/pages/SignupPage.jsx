@@ -114,7 +114,7 @@ const SignupPage = () => {
                                     onChange={handleChange}
                                     required
                                     className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-lk-teal focus:ring-2 focus:ring-lk-teal/20 outline-none transition-all"
-                                    placeholder="John Doe"
+                                    placeholder="Your Name"
                                 />
                             </div>
 

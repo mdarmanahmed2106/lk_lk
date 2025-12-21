@@ -30,6 +30,7 @@ export default {
         third: "moveInCircle 40s linear infinite",
         fourth: "moveHorizontal 40s ease infinite",
         fifth: "moveInCircle 20s ease infinite",
+        shimmer: "shimmer 2s linear infinite",
       },
       keyframes: {
         moveHorizontal: {
@@ -46,6 +47,10 @@ export default {
           "0%": { transform: "translateY(-50%)" },
           "50%": { transform: "translateY(50%)" },
           "100%": { transform: "translateY(-50%)" },
+        },
+        shimmer: {
+          "0%": { backgroundPosition: "-200% 0" },
+          "100%": { backgroundPosition: "200% 0" },
         },
       },
     },

@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:5000/api';
+// Use environment variable for production, fallback to localhost for development
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
 // Create axios instance
 const api = axios.create({
@@ -29,7 +30,11 @@ export const authAPI = {
     register: (userData) => api.post('/auth/register', userData),
     login: (credentials) => api.post('/auth/login', credentials),
     getMe: () => api.get('/auth/me'),
-    updateProfile: (userData) => api.put('/auth/updatedetails', userData)
+    updateProfile: (userData) => api.put('/auth/updatedetails', userData),
+    addAddress: (addressData) => api.post('/auth/addresses', addressData),
+    updateAddress: (id, addressData) => api.put(`/auth/addresses/${id}`, addressData),
+    deleteAddress: (id) => api.delete(`/auth/addresses/${id}`),
+    setDefaultAddress: (id) => api.patch(`/auth/addresses/${id}/default`)
 };
 
 // Booking API

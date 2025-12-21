@@ -1,25 +1,33 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
-const StoreButton = ({ store, icon, title, subtitle }) => (
-  <motion.button
+const StoreButton = ({ href, icon, title, subtitle }) => (
+  <motion.a
+    href={href}
+    target="_blank"
+    rel="noopener noreferrer"
     whileHover={{ scale: 1.05 }}
     whileTap={{ scale: 0.95 }}
-    className="flex items-center gap-3 bg-black text-white px-4 py-2.5 rounded-lg shadow-md hover:bg-gray-800 transition-colors min-w-[160px]"
+    className="flex items-center gap-3 bg-black text-white px-6 py-3 rounded-xl shadow-lg hover:bg-gray-800 transition-colors min-w-[180px]"
   >
-    <div className="w-6 h-6 fill-current">
+    <div className="w-7 h-7 fill-current">
       {icon}
     </div>
     <div className="text-left flex flex-col leading-none">
       <span className="text-[10px] uppercase font-medium opacity-80">{subtitle}</span>
-      <span className="text-sm font-bold tracking-wide">{title}</span>
+      <span className="text-base font-bold tracking-wide">{title}</span>
     </div>
-  </motion.button>
+  </motion.a>
 );
 
 const AppleIcon = (
-  <svg viewBox="0 0 384 512" xmlns="http://www.w3.org/2000/svg">
-    <path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 79.9c14.2 40.2 40.8 90.4 71.2 90.4 21.2 0 26.7-13.1 58.3-13.1 32 0 35.9 13.1 57.9 13.1 28 0 51.6-43.2 71.7-89.9 13.4-30.8 19.3-60.6 19.3-60.6-1.7-.8-58-22.7-58.1-64.6M249.9 74.9c17.2-21.8 31.2-49.9 28-80.6-26.3 3.3-50.6 15.2-66.2 34.1-14.7 17.6-27.3 49.3-24.6 79 27.6 2.1 48.1-12.2 62.8-32.5" />
+  <svg
+    viewBox="0 0 24 24"
+    xmlns="http://www.w3.org/2000/svg"
+    fill="currentColor"
+    className="w-full h-full"
+  >
+    <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z" />
   </svg>
 );
 
@@ -52,11 +60,13 @@ const DownloadSection = () => {
 
               <div className="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-4">
                 <StoreButton
+                  href="https://apps.apple.com/in/app/local-konnect/id6751973368"
                   icon={AppleIcon}
                   subtitle="Download on the"
                   title="App Store"
                 />
                 <StoreButton
+                  href="https://play.google.com/store/apps/details?id=com.localkonnect.customer&hl=en_IN"
                   icon={PlayStoreIcon}
                   subtitle="Get it on"
                   title="Google Play"
@@ -65,7 +75,7 @@ const DownloadSection = () => {
             </motion.div>
           </div>
 
-          {/* Image/Mockup Area */}
+          {/* Phone Mockup */}
           <div className="flex-1 relative w-full max-w-md md:max-w-lg">
             <motion.div
               initial={{ opacity: 0, x: 50 }}
@@ -74,19 +84,30 @@ const DownloadSection = () => {
               transition={{ duration: 0.8 }}
               className="relative"
             >
-              {/* Abstract Phone Mockup Shapes */}
-              <div className="relative z-10 mx-auto w-[260px] h-[500px] bg-white rounded-[40px] border-8 border-gray-800 shadow-2xl overflow-hidden">
-                <div className="absolute top-0 left-0 right-0 h-6 bg-gray-800 rounded-b-xl w-32 mx-auto z-20"></div>
-                <img
-                  src="/images/app-screenshot.png"
-                  alt="App Screen"
-                  className="w-full h-full object-cover"
-                />
+              {/* Phone Mockup */}
+              <div className="relative z-10 mx-auto w-[260px] h-[500px] bg-gradient-to-br from-gray-900 to-gray-800 rounded-[40px] border-8 border-gray-800 shadow-2xl overflow-hidden">
+                {/* Notch */}
+                <div className="absolute top-0 left-0 right-0 h-6 bg-gray-900 rounded-b-xl w-32 mx-auto z-20"></div>
+
+                {/* Screen Content - Gradient Background */}
+                <div className="w-full h-full bg-gradient-to-br from-lk-teal via-lk-teal/90 to-lk-mustard p-6 flex flex-col justify-center items-center">
+                  <div className="text-center text-white space-y-4">
+                    {/* Local Konnect Logo */}
+                    <img
+                      src="/images/lk-logo.png"
+                      alt="Local Konnect Logo"
+                      className="w-20 h-20 mx-auto mb-4 object-contain"
+                    />
+                    <h3 className="text-2xl font-bold">LocalKonnect</h3>
+                    <p className="text-sm opacity-90">Your Service Partner</p>
+                  </div>
+                </div>
+
                 {/* Floating UI Element */}
                 <motion.div
                   animate={{ y: [0, -10, 0] }}
                   transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
-                  className="absolute bottom-8 left-4 right-4 bg-white/90 backdrop-blur-md p-3 rounded-xl shadow-lg border border-gray-100"
+                  className="absolute bottom-8 left-4 right-4 bg-white/95 backdrop-blur-md p-3 rounded-xl shadow-lg border border-gray-100"
                 >
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-600 font-bold">✓</div>

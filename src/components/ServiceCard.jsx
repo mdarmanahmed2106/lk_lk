@@ -76,9 +76,9 @@ const ServiceCard = ({ title, rating, reviews, price, image, discount, serviceTy
                 <span className="font-bold text-lk-text text-sm">{rating}</span>
                 <span className="text-xs text-gray-400">({reviews})</span>
               </div>
-              <div className="text-xl font-bold text-lk-teal">${price}</div>
+              <div className="text-xl font-bold text-lk-teal">₹{price}</div>
             </div>
-            <p className="text-xs text-gray-500">Starts at ${price}</p>
+            <p className="text-xs text-gray-500">Starts at ₹{price}</p>
           </div>
         </div>
       </div>
