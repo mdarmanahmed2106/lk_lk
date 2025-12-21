@@ -16,6 +16,9 @@ connectDB();
 
 const app = express();
 
+// Trust proxy - required for Render deployment
+app.set('trust proxy', 1);
+
 // Body parser
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -23,7 +26,7 @@ app.use(express.urlencoded({ extended: true }));
 // Enable CORS
 app.use(cors({
     origin: process.env.NODE_ENV === 'production'
-        ? 'https://your-production-domain.com'
+        ? process.env.FRONTEND_URL
         : 'http://localhost:5173',
     credentials: true
 }));
