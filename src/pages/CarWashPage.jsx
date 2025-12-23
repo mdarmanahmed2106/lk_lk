@@ -10,13 +10,20 @@ const CarWashPage = () => {
         const fetchServices = async () => {
             try {
                 const response = await serviceAPI.getByCategory('car-wash');
+                const serviceImages = {
+                    "Car Wash & Detailing": "/images/car-wash-detailing.png",
+                    "Interior Cleaning": "/images/car-wash-interior.png",
+                    "Ceramic Coating": "/images/car-wash-ceramic.png",
+                    "Paint Protection": "/images/car-wash-paint.png"
+                };
+
                 const serviceData = response.data.data.map(service => ({
                     title: service.name,
                     rating: service.rating?.toString() || "4.8",
                     reviews: service.reviews ? `${(service.reviews / 1000).toFixed(1)}k` : "1k",
                     price: service.price.toString(),
                     discount: service.discount || "",
-                    image: service.image || "/images/car-wash-hero.png"
+                    image: serviceImages[service.name] || service.image || "/images/car-wash-hero.png"
                 }));
                 setServices(serviceData);
                 setLoading(false);
@@ -52,7 +59,7 @@ const CarWashPage = () => {
         );
     }
 
-    return <ServicePage {...carWashData} />;
+    return <ServicePage {...carWashData} serviceType="car-wash" />;
 };
 
 export default CarWashPage;

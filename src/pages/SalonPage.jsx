@@ -10,13 +10,20 @@ const SalonPage = () => {
         const fetchServices = async () => {
             try {
                 const response = await serviceAPI.getByCategory('salon');
+                const serviceImages = {
+                    "Haircut & Styling": "/images/salon-haircut.png",
+                    "Hair Coloring": "/images/salon-coloring.png",
+                    "Facial & Cleanup": "/images/salon-facial.png",
+                    "Hair Spa Treatment": "/images/salon-spa.png"
+                };
+
                 const serviceData = response.data.data.map(service => ({
                     title: service.name,
                     rating: service.rating?.toString() || "4.8",
                     reviews: service.reviews ? `${(service.reviews / 1000).toFixed(1)}k` : "1k",
                     price: service.price.toString(),
                     discount: service.discount || "",
-                    image: service.image || "/images/womens-salon-hero.png"
+                    image: serviceImages[service.name] || service.image || "/images/womens-salon-hero.png"
                 }));
                 setServices(serviceData);
                 setLoading(false);

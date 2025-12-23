@@ -58,6 +58,7 @@ const ServiceCard = ({ title, rating, reviews, price, image, discount, serviceTy
           >
             <Link
               to={`/${serviceType}/book`}
+              state={{ selectedService: title }}
               className="block bg-white text-lk-teal py-2 rounded-lg font-semibold text-sm shadow-lg hover:bg-lk-teal hover:text-white transition-colors text-center"
             >
               Book Now

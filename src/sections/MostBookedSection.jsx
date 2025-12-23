@@ -11,17 +11,22 @@ const MostBookedSection = () => {
   useEffect(() => {
     const fetchMostBookedServices = async () => {
       try {
-        // Fetch specific popular services from different categories
+        // Fetch specific popular services from different categories in parallel
         const categories = ['cleaning', 'salon', 'electrician'];
-        const allServices = [];
 
-        for (const category of categories) {
-          const response = await serviceAPI.getByCategory(category);
+        // Fetch all categories simultaneously for better performance
+        const responses = await Promise.all(
+          categories.map(category => serviceAPI.getByCategory(category))
+        );
+
+        // Collect services from all successful responses
+        const allServices = responses.flatMap(response => {
           if (response.data.data && response.data.data.length > 0) {
             // Get first 2 services from each category
-            allServices.push(...response.data.data.slice(0, 2));
+            return response.data.data.slice(0, 2);
           }
-        }
+          return [];
+        });
 
         // Format the services for ServiceCard
         const formattedServices = allServices.slice(0, 5).map(service => ({

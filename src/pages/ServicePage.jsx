@@ -13,7 +13,8 @@ const ServicePage = ({
     benefits = [],
     services = [],
     ctaText = "Book Now",
-    bookingLink = "#"
+    bookingLink = "#",
+    serviceType // Added prop
 }) => {
     return (
         <div className="min-h-screen">
@@ -112,10 +113,11 @@ const ServicePage = ({
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                             {services.map((service, idx) => {
                                 // Extract serviceType from bookingLink (e.g., "/salon/book" -> "salon")
-                                const serviceType = bookingLink.split('/')[1];
+                                // PRIORITIZE explicit serviceType prop if available
+                                const finalServiceType = serviceType || bookingLink.split('/')[1];
                                 return (
                                     <ScrollReveal key={idx} delay={idx * 0.1}>
-                                        <ServiceCard {...service} serviceType={serviceType} />
+                                        <ServiceCard {...service} serviceType={finalServiceType} />
                                     </ScrollReveal>
                                 );
                             })}
